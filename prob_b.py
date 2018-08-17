@@ -43,20 +43,28 @@ def sprinkle(strs):
     #print('before comma:', before_comma)
 
 
+    bc_new = before_comma.copy()
+
     while True:
-        bc_len = len(before_comma)
-        ac_len = len(after_comma)
+        ac_new = dict()
 
-        for prev_word in before_comma:
+        for prev_word in bc_new:
             for next_word in words_after[prev_word]:
-                after_comma[next_word] = True
+                if not after_comma[next_word]:
+                    ac_new[next_word] = True
+                    after_comma[next_word] = True
 
-        for next_word in after_comma:
+        #print('ac_new:', ac_new)
+        bc_new = dict()
+        for next_word in ac_new:
             for prev_word in words_before[next_word]:
-                before_comma[prev_word] = True
+                if not before_comma[prev_word]:
+                    bc_new[prev_word] = True
+                    before_comma[prev_word] = True
+        #print('bc_new:', bc_new)
 
 
-        if bc_len == len(before_comma) and ac_len == len(after_comma):
+        if not bc_new:
             break
 
     #print('after comma:', after_comma)
